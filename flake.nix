@@ -57,9 +57,9 @@
               rm -rf $out/jslib/dist $out/jslib/node_modules
               cp -r ${jslib}/* $out/jslib/
 
-              # Patch start_server.sh to use absolute path to npm
+              # Patch start_server.sh to use absolute paths and set PATH
               substituteInPlace $out/lua/scripts/start_server.sh \
-                --replace-fail "npm" "${pkgs.nodejs}/bin/npm"
+                --replace-fail "#!/bin/sh" "#!/bin/sh"$'\n'"export PATH=\"${pkgs.nodejs}/bin:\$PATH\""
 
               runHook postInstall
             '';
