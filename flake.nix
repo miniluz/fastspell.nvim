@@ -56,8 +56,15 @@
               chmod -R u+w $out
               rm -rf $out/jslib/dist $out/jslib/node_modules
               cp -r ${jslib}/* $out/jslib/
+
+              # Patch start_server.sh to use absolute path to npm
+              substituteInPlace $out/lua/scripts/start_server.sh \
+                --replace-fail "npm" "${pkgs.nodejs}/bin/npm"
+
               runHook postInstall
             '';
+
+            nativeBuildInputs = [ pkgs.makeWrapper ];
 
             meta = {
               description = "Fast spell checking for Neovim";
